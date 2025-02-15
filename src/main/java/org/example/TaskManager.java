@@ -76,9 +76,8 @@ public class TaskManager {
     }
 
     public void removeTask(Task task) {
-        tasks.remove(task);
-
         File file = new File("tasks.json");
+
         if (file.length() == 0) {
             System.out.println("\tTask does not exist");
         } else {
@@ -113,18 +112,46 @@ public class TaskManager {
         this.removeTask(task);
     }
 
-    public void removeTask(String name) {
+    public void markTaskAsCompleted(Task task) {
+        File file = new File("tasks.json");
+
+        if (file.length() == 0) {
+            System.out.println("\tTask does not exist");
+        } else {
+            var objectMapper = new ObjectMapper();
+            try {
+                LinkedHashMap<String, LinkedHashMap<String, Object>> content = objectMapper.readValue(file, new TypeReference<>() {
+                });
+                if (!content.containsKey(String.valueOf(task.getId()))) {
+                    System.out.println("\tTask does not exist");
+                } else {
+                    LinkedHashMap<String, Object> taskLinkedHashMap = content.get(String.valueOf(task.getId()));
+                    taskLinkedHashMap.put("completed", true);
+                    content.put(String.valueOf(task.getId()), taskLinkedHashMap);
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, content);
+                    System.out.println("\tTask completed");
+                }
+            } catch (IOException e) {
+                System.out.println("\tError reading tasks file");
+            }
+        }
+    }
+
+    public void markTaskAsCompleted(int id) {
         Task task = new Task();
 
         for (Task t : tasks) {
-            if (t.getName().equals(name)) {
-                tasks.remove(t);
+            if (t.getId() == id) {
+                if (t.getCompleted()) {
+                    System.out.println("\tTask already completed");
+                    return;
+                }
+                t.setCompleted(true);
                 task = t;
-                break;
             }
         }
 
-        this.removeTask(task);
+        this.markTaskAsCompleted(task);
     }
 
     public ArrayList<Task> getTasks() {
