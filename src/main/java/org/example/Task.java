@@ -5,6 +5,12 @@ public class Task {
     private String name;
     private boolean completed;
 
+    Task() {
+        this.id = -1;
+        this.name = "";
+        this.completed = false;
+    }
+
     Task(int id, String name, boolean completed) {
         this.id = id;
         this.name = name;

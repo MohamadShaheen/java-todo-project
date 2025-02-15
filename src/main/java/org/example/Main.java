@@ -5,17 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         boolean running = true;
-
-        var task1 = new Task(1, "name1", true);
-        var task2 = new Task(2, "name2", false);
-        var task3 = new Task(3, "name3", true);
-        var task4 = new Task(4, "name4", false);
-
         var taskManager = new TaskManager();
-        taskManager.addTask(task1);
-        taskManager.addTask(task2);
-        taskManager.addTask(task3);
-        taskManager.addTask(task4);
         var scanner = new Scanner(System.in);
 
         while (running) {
@@ -44,7 +34,7 @@ public class Main {
                 case 2:
                     System.out.println("""
                             \t1. Remove by ID.\
-                            
+                                                        
                             \t2. Remove by name.""");
                     System.out.print("\t");
                     int removeFactor = scanner.nextInt();
@@ -58,9 +48,11 @@ public class Main {
                             System.out.print("\tEnter task name: ");
                             name = scanner.next();
                             taskManager.removeTask(name);
+                            break;
                         default:
                             System.out.println("\tInvalid input.");
                     }
+                    break;
                 case 3:
                     System.out.println(taskManager);
                     break;
